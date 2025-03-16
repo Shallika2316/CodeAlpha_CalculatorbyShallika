@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volume Converter</title>
+    <style>
+        @font-face {
+      font-family: "Josefinslab";
+      src:url(Josefin_Slab/JosefinSlab-VariableFont_wght.ttf)
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff9a9e, #a06bb3, #71a0bc, #aed6b2, #c9c27a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s infinite alternate;
+            text-align: center;
+            transition: background 0.5s ease-in-out;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            text-align: left;
+        }
+
+        .header h1 {
+            font-family: 'Josefinslab';
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 3px 5px 2px rgba(17, 17, 17, 0.3);
+        }
+
+        .header .line {
+            width: 80px;
+            height: 2px;
+            background-color: black;
+            margin: 5px 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            width: 80%;
+            margin-top: 80px;
+        }
+
+        .conversions {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            text-align: left;
+            flex: 1; /* Ensures it takes equal space */
+        }
+
+
+
+        .conversion-box select {
+            width: 100px;
+            padding: 8px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+
+        .conversion-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px 0;
+            gap: 100px; 
+        }
+
+
+        .value {
+            font-size: 2rem;
+            color: rgb(255, 252, 252);
+            min-width: 80px; 
+            text-align: right;
+        }
+
+        .subtext {
+            font-size: 0.9rem;
+            color: rgb(52, 52, 52);
+            text-align: right;
+        }
+
+
+        .divider {
+            width: 2px;
+            height: 250px;
+            background-color: black;
+        }
+
+        .keypad {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+            flex: 1; /* Ensures it takes equal space */
+        }
+
+
+        /* Number Keypad Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            justify-content: center;
+            align-items: center;    
+        }
+
+        .ac {
+            grid-column: 2; /* AC in the middle */
+            grid-row: 4;
+        }
+
+        .backspace {
+            grid-column: 3; /* Backspace in the right */
+            grid-row: 4;
+        }
+
+        .key:nth-child(13) { /* Decimal (.) in row 5 */
+            grid-column: 1; /* First column */
+            grid-row: 5;
+        }
+
+
+        .key {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .key:hover {
+            transform: translateY(-5px);
+        }
+
+        .key-wide {
+            grid-column: span 3;
+            height: 70px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: linear-gradient(145deg, #e0e0e0, #ffffff);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>VOLUME</h1>
+        <div class="line"></div>
+        <h2>Converter by Shallika</h2>
+    </div>
+    
+    <button class="back-button" onclick="goBack()">← Back</button>
+    
+    <div class="container">
+        <div class="conversions">
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit1" onchange="updateConversion()">
+                        <option value="m3">Cubic meter</option>
+                        <option value="dm3">Cubic decimeter</option>
+                        <option value="cm3">Cubic centimeter</option>
+                        <option value="mm3">Cubic millimeter</option>
+                        <option value="hl">Hectoliter</option>
+                        <option value="l">Liter</option>
+                        <option value="dl">Deciliter</option>
+                        <option value="cl">Centiliter</option>
+                        <option value="ml">Milliliter</option>
+                        <option value="ft3">Cubic foot</option>
+                        <option value="in3">Cubic inch</option>
+                        <option value="yd3">Cubic yard</option>
+                        <option value="af3">Acre-foot</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="inputValue">1</div>
+                    <div class="subtext" id="unitLabel1">Cubic meter</div>
+                </div>
+            </div>
+    
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit2" onchange="updateConversion()">
+                        <option value="dm3">Cubic decimeter</option>
+                        <option value="m3">Cubic meter</option>
+                        <option value="cm3">Cubic centimeter</option>
+                        <option value="mm3">Cubic millimeter</option>
+                        <option value="hl">Hectoliter</option>
+                        <option value="l">Liter</option>
+                        <option value="dl">Deciliter</option>
+                        <option value="cl">Centiliter</option>
+                        <option value="ml">Milliliter</option>
+                        <option value="ft3">Cubic foot</option>
+                        <option value="in3">Cubic inch</option>
+                        <option value="yd3">Cubic yard</option>
+                        <option value="af3">Acre-foot</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="outputValue">1</div>
+                    <div class="subtext" id="unitLabel2">Cubic decimeter</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="divider"></div>
+        
+        <div class="grid">
+            <div class="key" onclick="pressKey(7)">7</div>
+            <div class="key" onclick="pressKey(8)">8</div>
+            <div class="key" onclick="pressKey(9)">9</div>
+            <div class="key" onclick="pressKey(4)">4</div>
+            <div class="key" onclick="pressKey(5)">5</div>
+            <div class="key" onclick="pressKey(6)">6</div>
+            <div class="key" onclick="pressKey(1)">1</div>
+            <div class="key" onclick="pressKey(2)">2</div>
+            <div class="key" onclick="pressKey(3)">3</div>
+            <div class="key" onclick="pressKey(0)">0</div>
+            <div class="key ac" onclick="clearInput()">AC</div>
+            <div class="key backspace" onclick="backspace()">⌫</div>
+            <div class="key" onclick="pressKey('.')">.</div>
+        </div>
+    </div>
+    
+    <script>
+    let conversionRates = {
+        "m3": { "dm3": 1000, "cm3": 1e+6, "mm3": 1e+9, "hl": 10, "l": 1000, "dl": 10000, "cl": 100000, "ml": 1e+6, "ft3": 35.3147, "in3": 61023.7, "yd3": 1.30795, "af3": 0.000810714 },
+        "dm3": { "m3": 0.001, "cm3": 1000, "mm3": 1e+6, "hl": 0.01, "l": 1, "dl": 10, "cl": 100, "ml": 1000, "ft3": 0.0353147, "in3": 61.0237, "yd3": 0.00130795, "af3": 8.10714e-7 },
+        "cm3": { "m3": 1e-6, "dm3": 0.001, "mm3": 1000, "hl": 1e-5, "l": 0.001, "dl": 0.01, "cl": 0.1, "ml": 1, "ft3": 3.53147e-5, "in3": 0.0610237, "yd3": 1.30795e-6, "af3": 8.10714e-10 }
+    };
+
+    function updateConversion() {
+        let inputUnit = document.getElementById("unit1").value;
+        let outputUnit = document.getElementById("unit2").value;
+        let inputValue = parseFloat(document.getElementById("inputValue").textContent) || 0;
+
+        if (inputUnit === outputUnit) {
+            document.getElementById("outputValue").textContent = inputValue;
+        } else if (conversionRates[inputUnit] && conversionRates[inputUnit][outputUnit]) {
+            let convertedValue = inputValue * conversionRates[inputUnit][outputUnit];
+            document.getElementById("outputValue").textContent = convertedValue.toFixed(6);
+        } else {
+            document.getElementById("outputValue").textContent = "N/A";
+        }
+
+        document.getElementById("unitLabel1").textContent = document.getElementById("unit1").selectedOptions[0].text;
+        document.getElementById("unitLabel2").textContent = document.getElementById("unit2").selectedOptions[0].text;
+    }
+
+    function pressKey(num) {
+        let inputValue = document.getElementById("inputValue").textContent;
+        if (num === "." && inputValue.includes(".")) return;
+        if (inputValue === "0") {
+            inputValue = num.toString();
+        } else {
+            inputValue += num.toString();
+        }
+        document.getElementById("inputValue").textContent = inputValue;
+        updateConversion();
+    }
+
+    function clearInput() {
+        document.getElementById("inputValue").textContent = "0";
+        updateConversion();
+    }
+
+    function backspace() {
+        let inputValue = document.getElementById("inputValue").textContent;
+        inputValue = inputValue.slice(0, -1);
+        if (inputValue === "") inputValue = "0";
+        document.getElementById("inputValue").textContent = inputValue;
+        updateConversion();
+    }
+
+    function goBack() {
+            window.location.href = "Calculator home.html"; // Change this to the actual home page URL
+        }
+
+    updateConversion();
+</script>
+
+    </script>    
+</body>
+</html>

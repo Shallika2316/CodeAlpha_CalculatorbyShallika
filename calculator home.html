@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+
+@font-face {
+      font-family: "Josefinslab";
+      src:url(Josefin_Slab/JosefinSlab-VariableFont_wght.ttf)
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #cb788a, #a06bb3, #71a0bc, #aed6b2, #c9c27a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s infinite alternate;
+            text-align: center;
+            transition: background 0.5s ease-in-out;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            text-align: left;
+        }
+
+        .header h1 {
+            font-family: 'Josefinslab';
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 3px 5px 2px rgba(17, 17, 17, 0.3);
+        }
+
+
+        .header .line {
+            width: 80px;
+            height: 2px;
+            background-color: white;
+            margin: 5px 0;
+        }
+
+        .header h2 {
+            font-family: 'Josefinslab';
+            font-size: 1.5rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* 6 buttons per row */
+            gap: 40px; /* Increased spacing */
+            margin-top: 100px;
+        }
+
+        .button {
+            width: 160px; /* Increased size */
+            height: 160px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 15px;
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            transform: translateY(-5px);
+            box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.3), -10px -10px 25px rgba(255, 255, 255, 0.9);
+        }
+
+        .button img {
+            width: 80px; /* Increased image size */
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        .button span {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>CALCULATOR</h1>
+        <div class="line"></div>
+        <h2>WELCOME</h2>
+    </div>
+
+    <div class="container">
+        <div class="button" onclick="navigateTo('basic calculator.html')">
+            <img src="https://i.imgur.com/VEqA2Tq.jpeg" alt="Basic Calculator">
+            <span>Basic Calculator</span>
+        </div>
+        <div class="button" onclick="navigateTo('age.html')">
+            <img src="https://i.imgur.com/WpW8VBG.jpeg" alt="Age">
+            <span>Age</span>
+        </div>
+        <div class="button" onclick="navigateTo('area.html')">
+            <img src="https://i.imgur.com/bfFHR4c.jpeg" alt="Area">
+            <span>Area</span>
+        </div>
+        <div class="button" onclick="navigateTo('bmi.html')">
+            <img src="https://i.imgur.com/rgHHXwR.jpeg" alt="BMI">
+            <span>BMI</span>
+        </div>
+        <div class="button" onclick="navigateTo('data.html')">
+            <img src="https://i.imgur.com/gxGjxYB.jpeg" alt="Data">
+            <span>Data</span>
+        </div>
+        <div class="button" onclick="navigateTo('currency.html')">
+            <img src="https://i.imgur.com/zJtRMqd.jpeg" alt="Currency">
+            <span>Currency</span>
+        </div>
+        <div class="button" onclick="navigateTo('length.html')">
+            <img src="https://i.imgur.com/PAA44em.jpeg" alt="Length">
+            <span>Length</span>
+        </div>
+        <div class="button" onclick="navigateTo('mass.html')">
+            <img src="http://i.imgur.com/o1OwFMD.jpeg" alt="Mass">
+            <span>Mass</span>
+        </div>
+        <div class="button" onclick="navigateTo('speed.html')">
+            <img src="https://i.imgur.com/FIGWgga.jpeg" alt="Speed">
+            <span>Speed</span>
+        </div>
+        <div class="button" onclick="navigateTo('Temperature.html')">
+            <img src="https://i.imgur.com/2UpRVwC.jpeg" alt="Temperature">
+            <span>Temperature</span>
+        </div>
+        <div class="button" onclick="navigateTo('Time.html')">
+            <img src="https://i.imgur.com/fND7xAC.jpeg" alt="Time">
+            <span>Time</span>
+        </div>
+        <div class="button" onclick="navigateTo('volume.html')">
+            <img src="https://i.imgur.com/A4GeTrZ.jpeg" alt="Volume">
+            <span>Volume</span>
+        </div>
+    </div>
+
+    <div class="footer">By: Shallika Seth</div>
+
+    <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+    </script>
+
+</body>
+</html>

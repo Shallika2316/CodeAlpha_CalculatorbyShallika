@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Converter</title>
+    <style>
+        @font-face {
+      font-family: "Josefinslab";
+      src:url(Josefin_Slab/JosefinSlab-VariableFont_wght.ttf)
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff9a9e, #a06bb3, #71a0bc, #aed6b2, #c9c27a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s infinite alternate;
+            text-align: center;
+            transition: background 0.5s ease-in-out;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            text-align: left;
+        }
+
+        .header h1 {
+    font-family: 'Josefinslab';
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-shadow: 5px 10px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+        .header .line {
+            width: 80px;
+            height: 2px;
+            background-color: black;
+            margin: 5px 0;
+        }
+
+        .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    width: 80%;
+    margin-top: 80px;
+}
+
+.conversions {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    text-align: left;
+    flex: 1; /* Ensures it takes equal space */
+}
+
+
+
+        .conversion-box select {
+            width: 100px;
+            padding: 8px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+
+        .conversion-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px 0;
+            gap: 100px; 
+        }
+
+
+        .value {
+            font-size: 2rem;
+            color: rgb(255, 252, 252);
+            min-width: 80px; 
+            text-align: right;
+        }
+
+        .subtext {
+            font-size: 0.9rem;
+            color: rgb(52, 52, 52);
+            text-align: right;
+        }
+
+
+        .divider {
+    width: 2px;
+    height: 250px;
+    background-color: black;
+}
+
+.keypad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    flex: 1; /* Ensures it takes equal space */
+}
+
+
+        /* Number Keypad Grid */
+        .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.ac {
+    grid-column: 2; /* AC in the middle */
+    grid-row: 4;
+}
+
+.backspace {
+    grid-column: 3; /* Backspace in the right */
+    grid-row: 4;
+}
+
+.key:nth-child(13) { /* Decimal (.) in row 5 */
+    grid-column: 1; /* First column */
+    grid-row: 5;
+}
+
+
+.key {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+        .key:hover {
+            transform: translateY(-5px);
+        }
+
+        .key-wide {
+            grid-column: span 3;
+            height: 70px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: linear-gradient(145deg, #e0e0e0, #ffffff);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>AREA</h1>
+        <div class="line"></div>
+        <h2>Converter by Shallika</h2>
+    </div>
+    
+    <button class="back-button" onclick="goBack()">← Back</button>
+    
+    <div class="container">
+        <div class="conversions">
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit1" onchange="updateConversion()">
+                        <option value="km2">Square Kilometer</option>
+                        <option value="ha">Hectare</option>
+                        <option value="a">Are</option>
+                        <option value="m2">Square Meter</option>
+                        <option value="dm2">Square Decimeter</option>
+                        <option value="cm2">Square Centimeter</option>
+                        <option value="mm2">Square Millimeter</option>
+                        <option value="µm2">Square Micron</option>
+                        <option value="ac">Acre</option>
+                        <option value="mile2">Square Mile</option>
+                        <option value="yd2">Square Yard</option>
+                        <option value="ft2">Square Foot</option>
+                        <option value="in2">Square Inch</option>
+                        <option value="rd2">Square Rod</option>
+                        <option value="qing">Qing</option>
+                        <option value="mu">Mu</option>
+                        <option value="chi2">Square Chi</option>
+                        <option value="cun2">Square Cun</option>
+                        <option value="gongli2">Square Kilometer (China)</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="inputValue">1</div>
+                    <div class="subtext" id="unitLabel1">Square Kilometer</div>
+                </div>
+            </div>
+    
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit2" onchange="updateConversion()">
+                        <option value="ha">Hectare</option>
+                        <option value="km2">Square Kilometer</option>
+                        <option value="a">Are</option>
+                        <option value="m2">Square Meter</option>
+                        <option value="dm2">Square Decimeter</option>
+                        <option value="cm2">Square Centimeter</option>
+                        <option value="mm2">Square Millimeter</option>
+                        <option value="µm2">Square Micron</option>
+                        <option value="ac">Acre</option>
+                        <option value="mile2">Square Mile</option>
+                        <option value="yd2">Square Yard</option>
+                        <option value="ft2">Square Foot</option>
+                        <option value="in2">Square Inch</option>
+                        <option value="rd2">Square Rod</option>
+                        <option value="qing">Qing</option>
+                        <option value="mu">Mu</option>
+                        <option value="chi2">Square Chi</option>
+                        <option value="cun2">Square Cun</option>
+                        <option value="gongli2">Square Kilometer (China)</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="outputValue">100</div>
+                    <div class="subtext" id="unitLabel2">Hectare</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="divider"></div>
+        
+        <div class="grid">
+            <div class="key" onclick="pressKey(7)">7</div>
+            <div class="key" onclick="pressKey(8)">8</div>
+            <div class="key" onclick="pressKey(9)">9</div>
+            <div class="key" onclick="pressKey(4)">4</div>
+            <div class="key" onclick="pressKey(5)">5</div>
+            <div class="key" onclick="pressKey(6)">6</div>
+            <div class="key" onclick="pressKey(1)">1</div>
+            <div class="key" onclick="pressKey(2)">2</div>
+            <div class="key" onclick="pressKey(3)">3</div>
+            <div class="key" onclick="pressKey(0)">0</div>
+            <div class="key ac" onclick="clearInput()">AC</div>
+            <div class="key backspace" onclick="backspace()">⌫</div>
+            <div class="key" onclick="pressKey('.')">.</div>
+        </div>
+    </div>
+    
+    <script>
+        let conversionRates = {
+    "km2": { "ha": 100, "m2": 1e6, "ac": 247.105, "mile2": 0.386102 },
+    "ha": { "km2": 0.01, "m2": 10000, "ac": 2.47105 },
+    "m2": { "km2": 1e-6, "ha": 0.0001, "ac": 0.000247105 },
+    "ac": { "km2": 0.00404686, "ha": 0.404686, "m2": 4046.86 },
+    "mile2": { "km2": 2.58999, "ha": 258.999, "m2": 2.59e6 },
+    "yd2": { "m2": 0.836127 },
+    "ft2": { "m2": 0.092903 },
+    "in2": { "m2": 0.00064516 }
+};
+
+// Mapping units to their readable names
+let unitNames = {
+    "km2": "Square Kilometer",
+    "ha": "Hectare",
+    "m2": "Square Meter",
+    "ac": "Acre",
+    "mile2": "Square Mile",
+    "yd2": "Square Yard",
+    "ft2": "Square Foot",
+    "in2": "Square Inch"
+};
+
+let inputStr = "1"; // Store input value as a string for easy manipulation
+
+// Handles number button presses
+function pressKey(value) {
+    if (value === "." && inputStr.includes(".")) return; // Prevent multiple dots
+    inputStr = inputStr === "0" ? value.toString() : inputStr + value;
+    updateInputDisplay();
+}
+
+// Clears the input
+function clearInput() {
+    inputStr = "0";
+    updateInputDisplay();
+}
+
+// Handles backspace (deletes last character)
+function backspace() {
+    inputStr = inputStr.length > 1 ? inputStr.slice(0, -1) : "0";
+    updateInputDisplay();
+}
+
+// Updates the displayed input value and performs conversion
+function updateInputDisplay() {
+    document.getElementById("inputValue").textContent = inputStr;
+    updateConversion();
+}
+
+// Converts the area based on selected units
+function updateConversion() {
+    let inputUnit = document.getElementById("unit1").value;
+    let outputUnit = document.getElementById("unit2").value;
+    let inputValue = parseFloat(inputStr) || 0;
+
+    let conversionRate = conversionRates[inputUnit]?.[outputUnit] || (inputUnit === outputUnit ? 1 : 0);
+    let result = inputValue * conversionRate;
+
+    document.getElementById("outputValue").textContent = result.toLocaleString();
+    document.getElementById("unitLabel1").textContent = unitNames[inputUnit] || inputUnit;
+    document.getElementById("unitLabel2").textContent = unitNames[outputUnit] || outputUnit;
+}
+
+// Navigates back to the home page
+function goBack() {
+    window.location.href = "Calculator home.html"; // Change "index.html" to your actual homepage file if different
+}
+
+// Update subtext when units change
+document.getElementById("unit1").addEventListener("change", updateConversion);
+document.getElementById("unit2").addEventListener("change", updateConversion);
+
+    </script>
+    </body>
+        
+</html>

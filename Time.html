@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Converter</title>
+    <style>
+        @font-face {
+      font-family: "Josefinslab";
+      src:url(Josefin_Slab/JosefinSlab-VariableFont_wght.ttf)
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff9a9e, #a06bb3, #71a0bc, #aed6b2, #c9c27a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s infinite alternate;
+            text-align: center;
+            transition: background 0.5s ease-in-out;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            text-align: left;
+        }
+
+        .header h1 {
+            font-family: 'Josefinslab';
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 3px 5px 2px rgba(17, 17, 17, 0.3);
+        }
+
+        .header .line {
+            width: 80px;
+            height: 2px;
+            background-color: black;
+            margin: 5px 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            width: 80%;
+            margin-top: 80px;
+        }
+
+        .conversions {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            text-align: left;
+            flex: 1; /* Ensures it takes equal space */
+        }
+
+
+
+        .conversion-box select {
+            width: 100px;
+            padding: 8px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+
+        .conversion-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px 0;
+            gap: 100px; 
+        }
+
+
+        .value {
+            font-size: 2rem;
+            color: rgb(255, 252, 252);
+            min-width: 80px; 
+            text-align: right;
+        }
+
+        .subtext {
+            font-size: 0.9rem;
+            color: rgb(52, 52, 52);
+            text-align: right;
+        }
+
+
+        .divider {
+            width: 2px;
+            height: 250px;
+            background-color: black;
+        }
+
+        .keypad {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+            flex: 1; /* Ensures it takes equal space */
+        }
+
+
+        /* Number Keypad Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            justify-content: center;
+            align-items: center;    
+        }
+
+        .ac {
+            grid-column: 2; /* AC in the middle */
+            grid-row: 4;
+        }
+
+        .backspace {
+            grid-column: 3; /* Backspace in the right */
+            grid-row: 4;
+        }
+
+        .key:nth-child(13) { /* Decimal (.) in row 5 */
+            grid-column: 1; /* First column */
+            grid-row: 5;
+        }
+
+
+        .key {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .key:hover {
+            transform: translateY(-5px);
+        }
+
+        .key-wide {
+            grid-column: span 3;
+            height: 70px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: linear-gradient(145deg, #e0e0e0, #ffffff);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>TIME</h1>
+        <div class="line"></div>
+        <h2>Converter by Shallika</h2>
+    </div>
+    
+    <button class="back-button" onclick="goBack()">← Back</button>
+    
+    <div class="container">
+        <div class="conversions">
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit1" onchange="updateConversion()">
+                        <option value="y">Year</option>
+                        <option value="wk">Week</option>
+                        <option value="d">Day</option>
+                        <option value="h">Hour</option>
+                        <option value="min">Minute</option>
+                        <option value="s">Second</option>
+                        <option value="ms">Millisecond</option>
+                        <option value="us">Microsecond</option>
+                        <option value="ps">Picosecond</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="inputValue">1</div>
+                    <div class="subtext" id="unitLabel1">Year</div>
+                </div>
+            </div>
+    
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit2" onchange="updateConversion()">
+                        <option value="wk">Week</option>
+                        <option value="y">Year</option>
+                        <option value="d">Day</option>
+                        <option value="h">Hour</option>
+                        <option value="min">Minute</option>
+                        <option value="s">Second</option>
+                        <option value="ms">Millisecond</option>
+                        <option value="us">Microsecond</option>
+                        <option value="ps">Picosecond</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="outputValue">1</div>
+                    <div class="subtext" id="unitLabel2">Week</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="divider"></div>
+        
+        <div class="grid">
+            <div class="key" onclick="pressKey(7)">7</div>
+            <div class="key" onclick="pressKey(8)">8</div>
+            <div class="key" onclick="pressKey(9)">9</div>
+            <div class="key" onclick="pressKey(4)">4</div>
+            <div class="key" onclick="pressKey(5)">5</div>
+            <div class="key" onclick="pressKey(6)">6</div>
+            <div class="key" onclick="pressKey(1)">1</div>
+            <div class="key" onclick="pressKey(2)">2</div>
+            <div class="key" onclick="pressKey(3)">3</div>
+            <div class="key" onclick="pressKey(0)">0</div>
+            <div class="key ac" onclick="clearInput()">AC</div>
+            <div class="key backspace" onclick="backspace()">⌫</div>
+            <div class="key" onclick="pressKey('.')">.</div>
+        </div>
+    </div>
+    
+    <script>
+        // Time conversion rates
+let conversionRates = {
+    "y": { "wk": 52.1429, "d": 365, "h": 8760, "min": 525600, "s": 31536000, "ms": 3.154e+10, "us": 3.154e+13, "ps": 3.154e+22 },
+    "wk": { "y": 0.019165, "d": 7, "h": 168, "min": 10080, "s": 604800, "ms": 6.048e+8, "us": 6.048e+11, "ps": 6.048e+20 },
+    "d": { "y": 0.00273973, "wk": 0.142857, "h": 24, "min": 1440, "s": 86400, "ms": 8.64e+7, "us": 8.64e+10, "ps": 8.64e+19 },
+    "h": { "y": 0.000114155, "wk": 0.00595238, "d": 0.0416667, "min": 60, "s": 3600, "ms": 3.6e+6, "us": 3.6e+9, "ps": 3.6e+18 },
+    "min": { "y": 1.9026e-6, "wk": 9.9206e-5, "d": 0.000694444, "h": 0.0166667, "s": 60, "ms": 60000, "us": 6e+7, "ps": 6e+16 },
+    "s": { "y": 3.1689e-8, "wk": 1.6534e-6, "d": 1.1574e-5, "h": 0.000277778, "min": 0.0166667, "ms": 1000, "us": 1e+6, "ps": 1e+15 },
+    "ms": { "y": 3.1689e-11, "wk": 1.6534e-9, "d": 1.1574e-8, "h": 2.7778e-7, "min": 1.6667e-5, "s": 0.001, "us": 1000, "ps": 1e+12 },
+    "us": { "y": 3.1689e-14, "wk": 1.6534e-12, "d": 1.1574e-11, "h": 2.7778e-10, "min": 1.6667e-8, "s": 1e-6, "ms": 0.001, "ps": 1e+9 },
+    "ps": { "y": 3.1689e-23, "wk": 1.6534e-21, "d": 1.1574e-20, "h": 2.7778e-19, "min": 1.6667e-17, "s": 1e-15, "ms": 1e-12, "us": 1e-9 }
+};
+
+// Function to update the conversion
+function updateConversion() {
+    let inputValue = parseFloat(document.getElementById("inputValue").innerText) || 0;
+    let unit1 = document.getElementById("unit1").value;
+    let unit2 = document.getElementById("unit2").value;
+
+    // Convert input value to the selected unit
+    if (unit1 === unit2) {
+        document.getElementById("outputValue").innerText = inputValue; // No conversion needed
+    } else {
+        let convertedValue = inputValue * (conversionRates[unit1][unit2] || 1);
+        document.getElementById("outputValue").innerText = convertedValue.toFixed(5);
+    }
+
+    // Update unit labels
+    document.getElementById("unitLabel1").innerText = document.getElementById("unit1").selectedOptions[0].text;
+    document.getElementById("unitLabel2").innerText = document.getElementById("unit2").selectedOptions[0].text;
+}
+
+// Handles number button clicks
+function pressKey(num) {
+    let inputElement = document.getElementById("inputValue");
+    let currentValue = inputElement.innerText;
+
+    // Prevent multiple decimals
+    if (num === "." && currentValue.includes(".")) return;
+
+    // Append number or reset if it's "0"
+    if (currentValue === "0") {
+        inputElement.innerText = num;
+    } else {
+        inputElement.innerText += num;
+    }
+
+    updateConversion();
+}
+
+// Clears the input
+function clearInput() {
+    document.getElementById("inputValue").innerText = "0";
+    updateConversion();
+}
+
+// Handles backspace
+function backspace() {
+    let inputElement = document.getElementById("inputValue");
+    let currentValue = inputElement.innerText;
+    
+    if (currentValue.length > 1) {
+        inputElement.innerText = currentValue.slice(0, -1);
+    } else {
+        inputElement.innerText = "0";
+    }
+
+    updateConversion();
+}
+
+// Redirects to home.html
+function goBack() {
+            window.location.href = "Calculator home.html"; // Change this to the actual home page URL
+        }
+
+// Initialize conversion when the page loads
+updateConversion();
+
+    </script>
+    
+</body>
+</html>

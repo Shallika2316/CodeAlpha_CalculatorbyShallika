@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Length Converter</title>
+    <style>
+
+@font-face {
+      font-family: "Josefinslab";
+      src:url(Josefin_Slab/JosefinSlab-VariableFont_wght.ttf)
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff9a9e, #a06bb3, #71a0bc, #aed6b2, #c9c27a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s infinite alternate;
+            text-align: center;
+            transition: background 0.5s ease-in-out;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            font-family: 'Josefinslab';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            text-align: left;
+        }
+
+        .header h1 {
+            font-family: 'Josefinslab';
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 3px 5px 2px rgba(17, 17, 17, 0.3);
+        }
+
+        .header .line {
+            width: 80px;
+            height: 2px;
+            background-color: black;
+            margin: 5px 0;
+        }
+
+        .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    width: 80%;
+    margin-top: 80px;
+}
+
+.conversions {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    text-align: left;
+    flex: 1; /* Ensures it takes equal space */
+}
+
+
+
+        .conversion-box select {
+            width: 100px;
+            padding: 8px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+
+        .conversion-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px 0;
+            gap: 100px; 
+        }
+
+
+        .value {
+            font-size: 2rem;
+            color: rgb(255, 252, 252);
+            min-width: 80px; 
+            text-align: right;
+        }
+
+        .subtext {
+            font-size: 0.9rem;
+            color: rgb(52, 52, 52);
+            text-align: right;
+        }
+
+
+        .divider {
+    width: 2px;
+    height: 250px;
+    background-color: black;
+}
+
+.keypad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    flex: 1; /* Ensures it takes equal space */
+}
+
+
+        /* Number Keypad Grid */
+        .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.ac {
+    grid-column: 2; /* AC in the middle */
+    grid-row: 4;
+}
+
+.backspace {
+    grid-column: 3; /* Backspace in the right */
+    grid-row: 4;
+}
+
+.key:nth-child(13) { /* Decimal (.) in row 5 */
+    grid-column: 1; /* First column */
+    grid-row: 5;
+}
+
+
+.key {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+        .key:hover {
+            transform: translateY(-5px);
+        }
+
+        .key-wide {
+            grid-column: span 3;
+            height: 70px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: linear-gradient(145deg, #e0e0e0, #ffffff);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>LENGTH</h1>
+        <div class="line"></div>
+        <h2>Converter by Shallika</h2>
+    </div>
+    
+    <button class="back-button" onclick="goBack()">← Back</button>
+    
+    <div class="container">
+        <div class="conversions">
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit1" onchange="updateConversion()">
+                        <option value="cm">Centimeter</option>
+                        <option value="m">Meter</option>
+                        <option value="km">Kilometer</option>
+                        <option value="in">Inch</option>
+                        <option value="ft">Foot</option>
+                        <option value="yd">Yard</option>
+                        <option value="mi">Mile</option>
+                        <option value="ftm">Fathom</option>
+                        <option value="gongli">Gongli</option>
+                        <option value="li">Li</option>
+                        <option value="zhang">Zhang</option>
+                        <option value="chi">Chi</option>
+                        <option value="cun">Cun</option>
+                        <option value="fen">Fen</option>
+                        <option value="lii">Lii</option>
+                        <option value="hao">Hao</option>
+                        <option value="pc">Parsec</option>
+                        <option value="ld">Lunar Distance</option>
+                        <option value="au">Astronomical Unit</option>
+                        <option value="ly">Light Year</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="inputValue">1</div>
+                    <div class="subtext" id="unitLabel1">Centimeter</div>
+                </div>
+            </div>
+    
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit2" onchange="updateConversion()">
+                        <option value="m">Meter</option>
+                        <option value="cm">Centimeter</option>
+                        <option value="km">Kilometer</option>
+                        <option value="in">Inch</option>
+                        <option value="ft">Foot</option>
+                        <option value="yd">Yard</option>
+                        <option value="mi">Mile</option>
+                        <option value="ftm">Fathom</option>
+                        <option value="gongli">Gongli</option>
+                        <option value="li">Li</option>
+                        <option value="zhang">Zhang</option>
+                        <option value="chi">Chi</option>
+                        <option value="cun">Cun</option>
+                        <option value="fen">Fen</option>
+                        <option value="lii">Lii</option>
+                        <option value="hao">Hao</option>
+                        <option value="pc">Parsec</option>
+                        <option value="ld">Lunar Distance</option>
+                        <option value="au">Astronomical Unit</option>
+                        <option value="ly">Light Year</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="outputValue">0.01</div>
+                    <div class="subtext" id="unitLabel2">Meter</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="divider"></div>
+        
+        <div class="grid">
+            <div class="key" onclick="pressKey(7)">7</div>
+            <div class="key" onclick="pressKey(8)">8</div>
+            <div class="key" onclick="pressKey(9)">9</div>
+            <div class="key" onclick="pressKey(4)">4</div>
+            <div class="key" onclick="pressKey(5)">5</div>
+            <div class="key" onclick="pressKey(6)">6</div>
+            <div class="key" onclick="pressKey(1)">1</div>
+            <div class="key" onclick="pressKey(2)">2</div>
+            <div class="key" onclick="pressKey(3)">3</div>
+            <div class="key" onclick="pressKey(0)">0</div>
+            <div class="key ac" onclick="clearInput()">AC</div>
+            <div class="key backspace" onclick="backspace()">⌫</div>
+            <div class="key" onclick="pressKey('.')">.</div>
+        </div>
+    </div>
+    
+    <script>
+        let conversionRates = {
+            "cm": { "m": 0.01, "km": 0.00001, "in": 0.393701, "ft": 0.0328084, "yd": 0.0109361, "mi": 0.0000062137 },
+            "m": { "cm": 100, "km": 0.001, "in": 39.3701, "ft": 3.28084, "yd": 1.09361, "mi": 0.000621371 },
+            "km": { "cm": 100000, "m": 1000, "in": 39370.1, "ft": 3280.84, "yd": 1093.61, "mi": 0.621371 },
+            "in": { "cm": 2.54, "m": 0.0254, "km": 0.0000254, "ft": 0.0833333, "yd": 0.0277778, "mi": 0.0000157828 },
+            "ft": { "cm": 30.48, "m": 0.3048, "km": 0.0003048, "in": 12, "yd": 0.333333, "mi": 0.000189394 },
+            "yd": { "cm": 91.44, "m": 0.9144, "km": 0.0009144, "in": 36, "ft": 3, "mi": 0.000568182 },
+            "mi": { "cm": 160934, "m": 1609.34, "km": 1.60934, "in": 63360, "ft": 5280, "yd": 1760 },
+            "ftm": { "m": 1.8288 },
+            "gongli": { "km": 1 },
+            "li": { "m": 500 },
+            "zhang": { "m": 3.3333 },
+            "chi": { "m": 0.3333 },
+            "cun": { "m": 0.0333 },
+            "fen": { "m": 0.0033 },
+            "lii": { "m": 0.00033 },
+            "hao": { "m": 0.000033 },
+            "pc": { "m": 3.0857e16 },
+            "ld": { "m": 384400000 },
+            "au": { "m": 149597870700 },
+            "ly": { "m": 9.4607e15 }
+        };
+    
+        function updateConversion() {
+            let inputUnit = document.getElementById("unit1").value;
+    let outputUnit = document.getElementById("unit2").value;
+    let inputValue = parseFloat(document.getElementById("inputValue").textContent) || 0;
+
+    let result = inputUnit === outputUnit ? inputValue : inputValue * (conversionRates[inputUnit]?.[outputUnit] || 1);
+
+    document.getElementById("outputValue").textContent = result.toLocaleString();
+
+    // Update the subtext labels to show the selected units
+    document.getElementById("unitLabel1").textContent = document.getElementById("unit1").selectedOptions[0].text;
+    document.getElementById("unitLabel2").textContent = document.getElementById("unit2").selectedOptions[0].text;
+}
+    
+        function pressKey(value) {
+            let inputElement = document.getElementById("inputValue");
+            if (value === "." && inputElement.textContent.includes(".")) return;
+    
+            inputElement.textContent = (inputElement.textContent === "0" ? "" : inputElement.textContent) + value;
+            updateConversion();
+        }
+    
+        function backspace() {
+            let inputElement = document.getElementById("inputValue");
+            inputElement.textContent = inputElement.textContent.slice(0, -1) || "0";
+            updateConversion();
+        }
+    
+        function clearInput() {
+            document.getElementById("inputValue").textContent = "0";
+            document.getElementById("outputValue").textContent = "0";
+        }
+    
+        function goBack() {
+            window.location.href = "Calculator home.html"; // Change this to the actual home page URL
+        }
+    </script>
+    </body>
+    </html>

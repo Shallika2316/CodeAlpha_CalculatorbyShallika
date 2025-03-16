@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass Converter</title>
+    <style>
+
+@font-face {
+      font-family: "Josefinslab";
+      src:url(Josefin_Slab/JosefinSlab-VariableFont_wght.ttf)
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff9a9e, #a06bb3, #71a0bc, #aed6b2, #c9c27a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s infinite alternate;
+            text-align: center;
+            transition: background 0.5s ease-in-out;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            text-align: left;
+        }
+
+        .header h1 {
+            font-family: 'Josefinslab';
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 3px 5px 2px rgba(17, 17, 17, 0.3);
+        }
+
+        .header .line {
+            width: 80px;
+            height: 2px;
+            background-color: black;
+            margin: 5px 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            width: 80%;
+            margin-top: 80px;
+        }
+
+        .conversions {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            text-align: left;
+            flex: 1; /* Ensures it takes equal space */
+        }
+
+
+
+        .conversion-box select {
+            width: 100px;
+            padding: 8px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+
+        .conversion-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px 0;
+            gap: 100px; 
+        }
+
+
+        .value {
+            font-size: 2rem;
+            color: rgb(255, 252, 252);
+            min-width: 80px; 
+            text-align: right;
+        }
+
+        .subtext {
+            font-size: 0.9rem;
+            color: rgb(52, 52, 52);
+            text-align: right;
+        }
+
+
+        .divider {
+            width: 2px;
+            height: 250px;
+            background-color: black;
+        }
+
+        .keypad {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+            flex: 1; /* Ensures it takes equal space */
+        }
+
+
+        /* Number Keypad Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            justify-content: center;
+            align-items: center;    
+        }
+
+        .ac {
+            grid-column: 2; /* AC in the middle */
+            grid-row: 4;
+        }
+
+        .backspace {
+            grid-column: 3; /* Backspace in the right */
+            grid-row: 4;
+        }
+
+        .key:nth-child(13) { /* Decimal (.) in row 5 */
+            grid-column: 1; /* First column */
+            grid-row: 5;
+        }
+
+
+        .key {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .key:hover {
+            transform: translateY(-5px);
+        }
+
+        .key-wide {
+            grid-column: span 3;
+            height: 70px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: linear-gradient(145deg, #e0e0e0, #ffffff);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>MASS</h1>
+        <div class="line"></div>
+        <h2>Converter by Shallika</h2>
+    </div>
+    
+    <button class="back-button" onclick="goBack()">← Back</button>
+    
+    <div class="container">
+        <div class="conversions">
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit1" onchange="updateConversion()">
+                        <option value="t">Tonne</option>
+                        <option value="kg">Kilogram</option>
+                        <option value="g">Gram</option>
+                        <option value="mg">Milligram</option>
+                        <option value="µg">Microgram</option>
+                        <option value="q">Quintal</option>
+                        <option value="lb">Pound</option>
+                        <option value="oz">Ounce</option>
+                        <option value="ct">Carat</option>
+                        <option value="gr">Grain</option>
+                        <option value="lt">Long Ton</option>
+                        <option value="sht">Short Ton</option>
+                        <option value="cwt_uk">UK Hundredweight</option>
+                        <option value="cwt_us">US Hundredweight</option>
+                        <option value="st">Stone</option>
+                        <option value="dr">Dram</option>
+                        <option value="dan">Dan</option>
+                        <option value="jin">Jin</option>
+                        <option value="qian">Qian</option>
+                        <option value="liang">Liang</option>
+                        <option value="jin_tw">Jin (Taiwan)</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="inputValue">1</div>
+                    <div class="subtext" id="unitLabel1">Tonne</div>
+                </div>
+            </div>
+    
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit2" onchange="updateConversion()">
+                        <option value="kg">Kilogram</option>
+                        <option value="t">Tonne</option>
+                        <option value="g">Gram</option>
+                        <option value="mg">Milligram</option>
+                        <option value="µg">Microgram</option>
+                        <option value="q">Quintal</option>
+                        <option value="lb">Pound</option>
+                        <option value="oz">Ounce</option>
+                        <option value="ct">Carat</option>
+                        <option value="gr">Grain</option>
+                        <option value="lt">Long Ton</option>
+                        <option value="sht">Short Ton</option>
+                        <option value="cwt_uk">UK Hundredweight</option>
+                        <option value="cwt_us">US Hundredweight</option>
+                        <option value="st">Stone</option>
+                        <option value="dr">Dram</option>
+                        <option value="dan">Dan</option>
+                        <option value="jin">Jin</option>
+                        <option value="qian">Qian</option>
+                        <option value="liang">Liang</option>
+                        <option value="jin_tw">Jin (Taiwan)</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="outputValue">1000</div>
+                    <div class="subtext" id="unitLabel2">Kilogram</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="divider"></div>
+        
+        <div class="grid">
+            <div class="key" onclick="pressKey(7)">7</div>
+            <div class="key" onclick="pressKey(8)">8</div>
+            <div class="key" onclick="pressKey(9)">9</div>
+            <div class="key" onclick="pressKey(4)">4</div>
+            <div class="key" onclick="pressKey(5)">5</div>
+            <div class="key" onclick="pressKey(6)">6</div>
+            <div class="key" onclick="pressKey(1)">1</div>
+            <div class="key" onclick="pressKey(2)">2</div>
+            <div class="key" onclick="pressKey(3)">3</div>
+            <div class="key" onclick="pressKey(0)">0</div>
+            <div class="key ac" onclick="clearInput()">AC</div>
+            <div class="key backspace" onclick="backspace()">⌫</div>
+            <div class="key" onclick="pressKey('.')">.</div>
+        </div>
+    </div>
+    
+    <script>
+        let conversionRates = {
+    "t": { "kg": 1000, "g": 1e6, "mg": 1e9, "µg": 1e12, "lb": 2204.62, "oz": 35273.96 },
+    "kg": { "t": 0.001, "g": 1000, "mg": 1e6, "µg": 1e9, "lb": 2.20462, "oz": 35.274 },
+    "g": { "t": 1e-6, "kg": 0.001, "mg": 1000, "µg": 1e6, "lb": 0.00220462, "oz": 0.035274 },
+    "mg": { "g": 0.001, "kg": 1e-6, "µg": 1000, "lb": 2.20462e-6, "oz": 3.5274e-5 },
+    "µg": { "mg": 0.001, "g": 1e-6, "kg": 1e-9, "lb": 2.20462e-9, "oz": 3.5274e-8 },
+    "lb": { "kg": 0.453592, "g": 453.592, "mg": 453592, "µg": 4.536e+8, "oz": 16 },
+    "oz": { "kg": 0.0283495, "g": 28.3495, "mg": 28349.5, "µg": 2.83495e+7, "lb": 0.0625 },
+    "ct": { "g": 0.2, "kg": 0.0002 },
+    "gr": { "g": 0.0647989, "kg": 6.47989e-5 },
+    "lt": { "kg": 1016.05 },
+    "sht": { "kg": 907.184 },
+    "cwt_uk": { "kg": 50.8023 },
+    "cwt_us": { "kg": 45.3592 },
+    "st": { "kg": 6.35029 },
+    "dr": { "g": 1.77185, "kg": 0.00177185 },
+    "dan": { "kg": 50 },
+    "jin": { "kg": 0.5 },
+    "qian": { "g": 5, "kg": 0.005 },
+    "liang": { "g": 50, "kg": 0.05 },
+    "jin_tw": { "kg": 0.6 }
+};
+
+// Function to handle numeric input clicks
+function pressKey(num) {
+    let inputField = document.getElementById("inputValue");
+    if (num === "." && inputField.textContent.includes(".")) return; // Avoid multiple decimals
+    if (inputField.textContent === "0") inputField.textContent = ""; // Remove leading zero
+    inputField.textContent += num;
+    updateConversion();
+}
+
+// Function to clear input
+function clearInput() {
+    document.getElementById("inputValue").textContent = "0";
+    updateConversion();
+}
+
+// Function to remove last character
+function backspace() {
+    let inputField = document.getElementById("inputValue");
+    inputField.textContent = inputField.textContent.slice(0, -1) || "0";
+    updateConversion();
+}
+
+// Function to update conversion
+function updateConversion() {
+    let inputUnit = document.getElementById("unit1").value;
+    let outputUnit = document.getElementById("unit2").value;
+    let inputValue = parseFloat(document.getElementById("inputValue").textContent) || 0;
+
+    let conversionFactor = conversionRates[inputUnit]?.[outputUnit] ?? (1 / (conversionRates[outputUnit]?.[inputUnit] || 1));
+
+    let result = inputUnit === outputUnit ? inputValue : inputValue * conversionFactor;
+    document.getElementById("outputValue").textContent = result.toLocaleString(undefined, { maximumFractionDigits: 6 });
+
+    // Update subtext labels
+    document.getElementById("unitLabel1").textContent = document.getElementById("unit1").options[document.getElementById("unit1").selectedIndex].text;
+    document.getElementById("unitLabel2").textContent = document.getElementById("unit2").options[document.getElementById("unit2").selectedIndex].text;
+}
+
+function goBack() {
+            window.location.href = "Calculator home.html"; // Change this to the actual home page URL
+        }
+
+// Initialize conversion on page load
+updateConversion();
+
+    </script>
+    </body>
+    </html>

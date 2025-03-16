@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+
+@font-face {
+      font-family: "Josefinslab";
+      src:url(Josefin_Slab/JosefinSlab-VariableFont_wght.ttf)
+    }
+    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff9a9e, #a06bb3, #71a0bc, #aed6b2, #c9c27a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s infinite alternate;
+            text-align: center;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        select, input {
+            padding: 10px;
+            margin: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #a62967;
+        }
+        #result {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: black;
+            background: linear-gradient(145deg, #f9f7f7, #ffffff);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+            background-color: white;
+        }
+
+
+    </style>
+</head>
+<body>
+
+
+    <button class="back-button" onclick="goBack()">← Back</button> 
+
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        <label for="height">Height:</label>
+        <input type="number" id="heightValue" placeholder="Enter value">
+        <select id="heightUnit">
+            <option value="m">Meters</option>
+            <option value="cm">Centimeters</option>
+            <option value="ft">Feet</option>
+            <option value="in">Inches</option>
+        </select>
+        
+        <label for="weight">Weight:</label>
+        <input type="number" id="weightValue" placeholder="Enter value">
+        <select id="weightUnit">
+            <option value="kg">Kilograms</option>
+            <option value="lbs">Pounds</option>
+        </select>
+
+        <button onclick="calculateBMI()">Calculate BMI</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function convertHeightToMeters(value, unit) {
+            if (unit === "cm") return value / 100;
+            if (unit === "ft") return value * 0.3048;
+            if (unit === "in") return value * 0.0254;
+            return value; // meters
+        }
+
+        function convertWeightToKg(value, unit) {
+            if (unit === "lbs") return value * 0.453592;
+            return value; // kg
+        }
+
+        function calculateBMI() {
+            let heightValue = parseFloat(document.getElementById("heightValue").value);
+            let heightUnit = document.getElementById("heightUnit").value;
+            let weightValue = parseFloat(document.getElementById("weightValue").value);
+            let weightUnit = document.getElementById("weightUnit").value;
+
+            if (isNaN(heightValue) || isNaN(weightValue) || heightValue <= 0 || weightValue <= 0) {
+                document.getElementById("result").textContent = "Please enter valid height and weight.";
+                return;
+            }
+
+            let heightInMeters = convertHeightToMeters(heightValue, heightUnit);
+            let weightInKg = convertWeightToKg(weightValue, weightUnit);
+
+            let bmi = weightInKg / (heightInMeters * heightInMeters);
+            let category = "";
+
+            if (bmi < 18.5) {
+                category = "Underweight";
+            } else if (bmi < 24.9) {
+                category = "Normal weight";
+            } else if (bmi < 29.9) {
+                category = "Overweight";
+            } else {
+                category = "Obese";
+            }
+
+            document.getElementById("result").textContent = `Your BMI: ${bmi.toFixed(2)} (${category})`;
+        }
+
+        function goBack() {
+    window.location.href = "calculator home.html";
+}
+
+    </script>
+
+</body>
+</html>

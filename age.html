@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <style>
+        @font-face {
+      font-family: "Josefinslab";
+      src:url(Josefin_Slab/JosefinSlab-VariableFont_wght.ttf)
+    }
+    
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff9a9e, #a06bb3, #71a0bc, #aed6b2, #c9c27a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s infinite alternate;
+            text-align: center;
+            transition: background 0.5s ease-in-out;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            text-align: left;
+        }
+
+        .header h1 {
+    font-family: 'Josefinslab';
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-shadow: 5px 10px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+        .header .line {
+            width: 80px;
+            height: 2px;
+            background-color: black;
+            margin: 5px 0;
+        }
+
+        .container {
+            background: white;
+            width: 600px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .age-card {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background: #f8f8f8;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .age-section, .birthday-section {
+            flex: 1;
+            text-align: center;
+        }
+
+        .age-section h2, .birthday-section h2 {
+            font-size: 3rem;
+            color: #ff6b6b;
+            margin-bottom: 5px;
+        }
+
+        .summary {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .summary h3 {
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .summary-item h4 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .summary-item p {
+            font-size: 1rem;
+            color: gray;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #e45a5a;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: linear-gradient(145deg, #e0e0e0, #ffffff);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>AGE</h1>
+        <div class="line"></div>
+        <h2>Converter by Shallika</h2>
+    </div>
+
+    <button class="back-button" onclick="goBack()">← Back</button>
+
+    <div class="container">
+
+        <div class="input-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob">
+        </div>
+
+        <div class="input-group">
+            <label>Today's Date</label>
+            <input type="text" id="today-date" disabled>
+        </div>
+
+        <button class="btn" onclick="calculateAge()">Calculate</button>
+
+        <div id="result">
+            <div class="age-card">
+                <div class="age-section">
+                    <h2 id="years">--</h2>
+                    <span>years</span>
+                    <br>
+                    <span id="months">-- months | -- days</span>
+                </div>
+                <div class="birthday-section">
+                    <h2 id="next-birthday">--</h2>
+                    <span>days until next birthday</span>
+                </div>
+            </div>
+
+            <div class="summary">
+                <h3>Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <h4 id="total-years">--</h4>
+                        <p>Years</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4 id="total-months">--</h4>
+                        <p>Months</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4 id="total-weeks">--</h4>
+                        <p>Weeks</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4 id="total-days">--</h4>
+                        <p>Days</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4 id="total-hours">--</h4>
+                        <p>Hours</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4 id="total-minutes">--</h4>
+                        <p>Minutes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Automatically set today's date in the input field
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("today-date").value = new Date().toISOString().split('T')[0];
+});
+
+function calculateAge() {
+    let dob = document.getElementById("dob").value;
+    
+    if (!dob) {
+        alert("Please enter your date of birth.");
+        return;
+    }
+
+    let birthDate = new Date(dob);
+    let today = new Date();
+
+    // Calculate age in years, months, and days
+    let ageYears = today.getFullYear() - birthDate.getFullYear();
+    let ageMonths = today.getMonth() - birthDate.getMonth();
+    let ageDays = today.getDate() - birthDate.getDate();
+
+    if (ageDays < 0) {
+        ageMonths--;
+        let prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        ageDays += prevMonth.getDate();
+    }
+
+    if (ageMonths < 0) {
+        ageYears--;
+        ageMonths += 12;
+    }
+
+    // Calculate the next birthday
+    let nextBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+    if (nextBirthday < today) {
+        nextBirthday.setFullYear(today.getFullYear() + 1);
+    }
+    let daysUntilNextBirthday = Math.ceil((nextBirthday - today) / (1000 * 60 * 60 * 24));
+
+    // Calculate total time lived
+    let totalMonths = ageYears * 12 + ageMonths;
+    let totalWeeks = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24 * 7));
+    let totalDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
+    let totalHours = totalDays * 24;
+    let totalMinutes = totalHours * 60;
+
+    // Update HTML elements with calculated values
+    document.getElementById("years").innerText = ageYears;
+    document.getElementById("months").innerText = `${ageMonths} months | ${ageDays} days`;
+    document.getElementById("next-birthday").innerText = daysUntilNextBirthday;
+
+    document.getElementById("total-years").innerText = ageYears;
+    document.getElementById("total-months").innerText = totalMonths;
+    document.getElementById("total-weeks").innerText = totalWeeks;
+    document.getElementById("total-days").innerText = totalDays;
+    document.getElementById("total-hours").innerText = totalHours;
+    document.getElementById("total-minutes").innerText = totalMinutes;
+}
+function goBack() {
+    window.location.href = "calculator home.html"; 
+}
+
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <style>
+        @font-face {
+      font-family: "Josefinslab";
+      src:url(Josefin_Slab/JosefinSlab-VariableFont_wght.ttf)
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff9a9e, #a06bb3, #71a0bc, #aed6b2, #c9c27a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s infinite alternate;
+            text-align: center;
+            transition: background 0.5s ease-in-out;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            text-align: left;
+        }
+
+        .header h1 {
+            font-family: 'Josefinslab';
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 3px 5px 2px rgba(17, 17, 17, 0.3);
+        }
+
+        .header .line {
+            width: 80px;
+            height: 2px;
+            background-color: black;
+            margin: 5px 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            width: 80%;
+            margin-top: 80px;
+        }
+
+        .conversions {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            text-align: left;
+            flex: 1; /* Ensures it takes equal space */
+        }
+
+
+
+        .conversion-box select {
+            width: 100px;
+            padding: 8px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+
+        .conversion-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px 0;
+            gap: 100px; 
+        }
+
+
+        .value {
+            font-size: 2rem;
+            color: rgb(255, 252, 252);
+            min-width: 80px; 
+            text-align: right;
+        }
+
+        .subtext {
+            font-size: 0.9rem;
+            color: rgb(52, 52, 52);
+            text-align: right;
+        }
+
+
+        .divider {
+            width: 2px;
+            height: 250px;
+            background-color: black;
+        }
+
+        .keypad {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+            flex: 1; /* Ensures it takes equal space */
+        }
+
+
+        /* Number Keypad Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            justify-content: center;
+            align-items: center;    
+        }
+
+        .ac {
+            grid-column: 2; /* AC in the middle */
+            grid-row: 4;
+        }
+
+        .backspace {
+            grid-column: 3; /* Backspace in the right */
+            grid-row: 4;
+        }
+
+        .key:nth-child(13) { /* Decimal (.) in row 5 */
+            grid-column: 1; /* First column */
+            grid-row: 5;
+        }
+
+
+        .key {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .key:hover {
+            transform: translateY(-5px);
+        }
+
+        .key-wide {
+            grid-column: span 3;
+            height: 70px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: linear-gradient(145deg, #e0e0e0, #ffffff);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>TEMPERATURE</h1>
+        <div class="line"></div>
+        <h2>Converter by Shallika</h2>
+    </div>
+
+    <button class="back-button" onclick="goBack()">← Back</button>
+
+    <div class="container">
+        <div class="conversions">
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit1" onchange="updateConversion()">
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="fahrenheit">Fahrenheit (°F)</option>
+                        <option value="kelvin">Kelvin (K)</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="inputValue">0</div>
+                    <div class="subtext" id="unitLabel1">Celsius</div>
+                </div>
+            </div>
+
+            <div class="conversion-box">
+                <div class="unit-container">
+                    <select id="unit2" onchange="updateConversion()">
+                        <option value="fahrenheit">Fahrenheit (°F)</option>
+                        <option value="celsius">Celsius (°C)</option>
+                        <option value="kelvin">Kelvin (K)</option>
+                    </select>
+                </div>
+                <div class="value-container">
+                    <div class="value" id="outputValue">32</div>
+                    <div class="subtext" id="unitLabel2">Fahrenheit</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="grid">
+            <div class="key" onclick="pressKey(7)">7</div>
+            <div class="key" onclick="pressKey(8)">8</div>
+            <div class="key" onclick="pressKey(9)">9</div>
+            <div class="key" onclick="pressKey(4)">4</div>
+            <div class="key" onclick="pressKey(5)">5</div>
+            <div class="key" onclick="pressKey(6)">6</div>
+            <div class="key" onclick="pressKey(1)">1</div>
+            <div class="key" onclick="pressKey(2)">2</div>
+            <div class="key" onclick="pressKey(3)">3</div>
+            <div class="key" onclick="pressKey(0)">0</div>
+            <div class="key ac" onclick="clearInput()">AC</div>
+            <div class="key backspace" onclick="backspace()">⌫</div>
+            <div class="key" onclick="pressKey('.')">.</div>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = "0";
+
+        function pressKey(value) {
+            if (value === "." && currentInput.includes(".")) return;
+            if (currentInput === "0" && value !== ".") {
+                currentInput = value.toString();
+            } else {
+                currentInput += value.toString();
+            }
+            document.getElementById("inputValue").textContent = currentInput;
+            updateConversion();
+        }
+
+        function clearInput() {
+            currentInput = "0";
+            document.getElementById("inputValue").textContent = currentInput;
+            updateConversion();
+        }
+
+        function backspace() {
+            currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : "0";
+            document.getElementById("inputValue").textContent = currentInput;
+            updateConversion();
+        }
+
+        function updateConversion() {
+            let inputUnit = document.getElementById("unit1").value;
+            let outputUnit = document.getElementById("unit2").value;
+            let inputValue = parseFloat(currentInput) || 0;
+            let result = inputValue;
+
+            if (inputUnit === "celsius") {
+                if (outputUnit === "fahrenheit") result = (inputValue * 9/5) + 32;
+                else if (outputUnit === "kelvin") result = inputValue + 273.15;
+            } else if (inputUnit === "fahrenheit") {
+                if (outputUnit === "celsius") result = (inputValue - 32) * 5/9;
+                else if (outputUnit === "kelvin") result = (inputValue - 32) * 5/9 + 273.15;
+            } else if (inputUnit === "kelvin") {
+                if (outputUnit === "celsius") result = inputValue - 273.15;
+                else if (outputUnit === "fahrenheit") result = (inputValue - 273.15) * 9/5 + 32;
+            }
+
+            document.getElementById("outputValue").textContent = result.toFixed(2);
+            document.getElementById("unitLabel1").textContent = document.getElementById("unit1").selectedOptions[0].text;
+            document.getElementById("unitLabel2").textContent = document.getElementById("unit2").selectedOptions[0].text;
+        }
+
+        function goBack() {
+            window.location.href = "calculator home.html";
+        }
+    </script>
+</body>
+</html>
