@@ -59,7 +59,7 @@
         }
 
         .calculator {
-            width: 600px;
+            width: 700px;
             background: rgba(0, 0, 0, 0.9);
             padding: 20px;
             border-radius: 10px;
@@ -81,7 +81,7 @@
 
         .buttons {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(9, 1fr);
             gap: 10px;
         }
 
@@ -148,106 +148,112 @@
         <input type="text" id="display" class="screen" disabled>
         <div class="buttons">
 
-            <button onclick="appendFunction('Math.sin')">sin</button>
-            <button onclick="appendFunction('Math.cos')">cos</button>
+            <button onclick="appendFunction('factorial')">x!</button>
+            <button onclick="appendFunction('pi')">π</button>
             <button onclick="appendValue('%')">%</button>
-            <button onclick="appendValue('(')">(</button>
-            <button onclick="appendValue(')')">)</button>
-            <button onclick="clearScreen()">AC</button>
-            <button onclick="deleteLast()">DEL</button>
-
-            <button onclick="appendFunction('Math.tan')">tan</button>
-            <button onclick="appendFunction('cot')">cot</button>
-            <button onclick="appendFunction('Math.sqrt')">√</button>
             <button onclick="appendValue('7')">7</button>
             <button onclick="appendValue('8')">8</button>
             <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('(')">(</button>
+            <button onclick="appendValue('*')">×</button>
             <button onclick="appendValue('/')">÷</button>
 
-            <button onclick="appendFunction('cosec')">cosec</button>
-            <button onclick="appendFunction('sec')">sec</button>
-            <button onclick="appendFunction('pi')">π</button>
+            <button onclick="appendValue('^')">x^y</button>
+            <button onclick="appendFunction('Math.sqrt')">√</button>
+            <button onclick="appendValue('.')">.</button>
             <button onclick="appendValue('4')">4</button>
             <button onclick="appendValue('5')">5</button>
             <button onclick="appendValue('6')">6</button>
-            <button onclick="appendValue('*')">×</button>
+            <button onclick="appendValue(')')">)</button>
+            <button onclick="appendValue('+')">+</button>
+            <button onclick="appendValue('-')">-</button>
 
-            <button onclick="appendFunction('factorial')">x!</button>
-            <button onclick="appendValue('^')">x^y</button>
             <button onclick="appendFunction('Math.pow')">x²</button>
+            <button onclick="appendFunction('Math.exp')">e</button>
+            <button onclick="appendValue('0')">0</button>
             <button onclick="appendValue('1')">1</button>
             <button onclick="appendValue('2')">2</button>
             <button onclick="appendValue('3')">3</button>
-            <button onclick="appendValue('-')">-</button>
-
-            <button onclick="appendFunction('Math.exp')">e</button>
-            <button onclick="appendFunction('Math.log10')">log</button>
-            <button onclick="appendFunction('Math.log')">ln</button>
-            <button onclick="appendValue('.')">.</button>
-            <button onclick="appendValue('0')">0</button>
             <button class="equal" onclick="calculate()">=</button>
-            <button onclick="appendValue('+')">+</button>
+            <button onclick="clearScreen()">AC</button>
+            <button onclick="deleteLast()">DEL</button>
 
         </div>
     </div>
 
     <script>
-        function appendValue(value) {
-    document.getElementById('display').value += value;
-}
-
-function appendFunction(func) {
-    let display = document.getElementById('display');
-    if (func === 'pi') {
-        display.value += 'π';
-    } else if (func === 'factorial') {
-        display.value += '!';
-    } else if (func === 'exp') {
-        display.value += 'e';
-    } else if (func === 'Math.pow') {
-        display.value += '^2';
-    } else {
-        display.value += func + '(';
+    
+    function appendValue(value) {
+        document.getElementById('display').value += value;
     }
-}
-
-function factorial(n) {
-    if (n === 0 || n === 1) return 1;
-    return n * factorial(n - 1);
-}
-
-function clearScreen() {
-    document.getElementById('display').value = '';
-}
-
-function deleteLast() {
-    let display = document.getElementById('display');
-    display.value = display.value.slice(0, -1);
-}
-
-function calculate() {
-    let display = document.getElementById('display').value;
-    try {
-        display = display.replace(/π/g, 'Math.PI')
-                        .replace(/sin\(/g, 'Math.sin(')
-                        .replace(/cos\(/g, 'Math.cos(')
-                        .replace(/tan\(/g, 'Math.tan(')
-                        .replace(/log\(/g, 'Math.log10(')
-                        .replace(/ln\(/g, 'Math.log(')
-                        .replace(/√/g, 'Math.sqrt')
-                        .replace(/e/g, 'Math.E')
-                        .replace(/\^/g, '**')
-                        .replace(/(\d+)!/g, (_, n) => factorial(parseInt(n)));
-        let result = eval(display);
-        document.getElementById('display').value = result;
-    } catch (error) {
-        document.getElementById('display').value = 'Error';
-    }
-}
-
-function goBack() {
-            window.location.href = "calculator home.html";
+    
+    function appendFunction(func) {
+        let display = document.getElementById('display');
+        if (func === 'pi') {
+            display.value += 'π';
+        } else if (func === 'factorial') {
+            display.value += '!';
+        } else if (func === 'Math.pow') {
+            display.value += '^';
+        } else {
+            display.value += func + '(';
         }
+    }
+    
+    // Convert degrees to radians
+    function toRadians(degrees) {
+        return degrees * (Math.PI / 180);
+    }
+    
+    // Factorial function
+    function factorial(n) {
+        if (n < 0) return 'Error'; // Factorial of negative numbers is undefined
+        if (n === 0 || n === 1) return 1;
+        let result = 1;
+        for (let i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+    
+    // Function to evaluate the expression safely
+    function calculate() {
+        let display = document.getElementById('display').value;
+        try {
+            display = display.replace(/π/g, 'Math.PI')
+                            .replace(/√/g, 'Math.sqrt')
+                            .replace(/e/g, 'Math.E')  
+                            .replace(/\^/g, '**');  
+    
+            // Handle factorials: Convert 'n!' to factorial(n)
+            display = display.replace(/(\d+)!/g, function(match, n) {
+                return factorial(parseInt(n));
+            });
+    
+            let result = eval(display);
+            document.getElementById('display').value = result;
+        } catch (error) {
+            document.getElementById('display').value = 'Error';
+        }
+    }
+    
+    // Other utility functions
+    function clearScreen() {
+        document.getElementById('display').value = '';
+    }
+    
+    function deleteLast() {
+        let display = document.getElementById('display');
+        display.value = display.value.slice(0, -1);
+    }
+    
+    function goBack() {
+        window.location.href = "calculator_home.html";
+    }
+</script>    
+</body>
+</html>
+
 
 
     </script>
